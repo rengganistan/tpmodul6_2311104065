@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace tpmodul6_2311104065
 {
-    class SayaTubeVideo
+    public class SayaTubeVideo
     {
         private int id;
         private string title;
@@ -18,26 +18,30 @@ namespace tpmodul6_2311104065
             if (string.IsNullOrEmpty(title) || title.Length > 100)
                 throw new ArgumentException("Judul tidak boleh kosong dan maksimal 100 karakter.");
 
-            // Generate ID random 5 digit
             Random rand = new Random();
             this.id = rand.Next(10000, 99999);
 
             this.title = title;
             this.playCount = 0;
         }
-
         public void IncreasePlayCount(int count)
         {
 
             if (count > 10000000)
                 throw new ArgumentException("Maksimum penambahan play count adalah 10.000.000");
 
-            checked
+            try
             {
-                this.playCount += count;
+                checked
+                {
+                    this.playCount += count;
+                }
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("Error: Terjadi overflow saat menambah play count.");
             }
         }
-
         public void PrintVideoDetails()
         {
             Console.WriteLine("===== Video Details =====");
